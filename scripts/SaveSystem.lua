@@ -47,57 +47,24 @@ end
 return Settings
 end
 
-local function ScriptWareImport(SettingsName,ProfileName,DefaultSettings)
-    local Settings
-    if not isprofile(SettingsName,ProfileName) then
-        writeprofile(SettingsName, ProfileName, EncodeJson(DefaultSettings))
-        Settings = DefaultSettings
-    else
-        Settings = DecodeJson(getprofile(SettingsName, ProfileName))
-    end
-    return Settings
-end
-
 function SaveSystem:Import(SettingsName, ProfileName, DefaultSettings)
-    local Settings
-    if GetExploit() == "ScriptWare" then 
-        Settings = ScriptWareImport(SettingsName,ProfileName,DefaultSettings)
-    else
-        Settings = GlobalImport(SettingsName, ProfileName, DefaultSettings)
-    end
+    local Settings = GlobalImport(SettingsName, ProfileName, DefaultSettings)
     if(tableIndex(Settings) == 0) then return DefaultSettings end
     return Settings
 end
 
-local function ScriptWareEdit(SettingsName,ProfileName,Settings)
-    if not isprofile(SettingsName,ProfileName) then
-        deleteprofile(SettingsName, ProfileName)
-            end
-        writeprofile(SettingsName, ProfileName, EncodeJson(Settings))
-end
 
 local function GlobalEdit(SettingsName,ProfileName,Settings)
     writefile(SettingsName.."_"..ProfileName..".json", EncodeJson(Settings))
 end
 
 function SaveSystem:Edit(SettingsName,ProfileName,Settings)
-
-    if GetExploit() == "ScriptWare" then 
-        ScriptWareEdit(SettingsName,ProfileName,Settings)
-    else
         GlobalEdit(SettingsName,ProfileName,Settings)
-    end
 
 end
 
 function SaveSystem:Delete(SettingsName,ProfileName)
-
-    if GetExploit() == "ScriptWare" then 
-        deleteprofile(SettingsName, ProfileName)
-    else
         delfile(SettingsName.."_"..ProfileName..".json")
-    end
-
 end
 
 return SaveSystem
